@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import './css/legacy.css';
+import ProductList from "./Search/ProductList";
+import { Helmet } from 'react-helmet';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <div className="pg-wrap">
+            <Helmet>
+                <meta charSet="utf-8"/>
+                <title>Подобрать шины в Минске | AvtoShina.By</title>
+            </Helmet>
+
+            <section className="s-main -tire">
+                <div className="main-wrapper">
+                    <section className="s-products s-category">
+                        <div className="container">
+                            <ProductList/>
+                        </div>
+                    </section>
+                </div>
+            </section>
+        </div>
+    );
 }
 
 export default App;

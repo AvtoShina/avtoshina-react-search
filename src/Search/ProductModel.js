@@ -1,4 +1,5 @@
 import React from 'react';
+import PriceWithCurrency from './../common/PriceWithCurrency';
 
 const ProductModel = ({ product }) => {
     const {
@@ -7,35 +8,28 @@ const ProductModel = ({ product }) => {
         price_old,
         available,
         quantity,
-        category_id,
-        category_name,
         delivery,
         type_prefix,
         vendor,
-        vendor_name,
         model,
-        description,
         picture,
-        purpose,
-        seat_diameter,
-        season,
-        profile_height,
-        width,
-        release_date,
-        run_flat,
-        load_index,
-        speed_index,
-        construction,
-        type,
-        spikes,
-        created_at,
-        updated_at,
-        importer,
-        service_center,
-        spikes_possibility,
-        source,
-        metric
+        // purpose,
+        // seat_diameter,
+        // season,
+        // profile_height,
+        // width,
+        // run_flat,
+        // load_index,
+        // speed_index,
+        // construction,
+        // type,
+        // spikes,
+        // spikes_possibility,
     } = product;
+
+    const isSellable = () => {
+        return quantity > 2 && available > 0;
+    };
 
     return (
         <a title={`Купить ${model} в Минске`} href={`https://avtoshina.by/tire/${id}`} className="prod-link">
@@ -53,22 +47,24 @@ const ProductModel = ({ product }) => {
                         </div>
                     </div>
                     <header className="itemCard-title">
-                        <p className="prod-title">{model}</p>
+                        <p className="prod-title">{type_prefix} {model}</p>
                         <p className="prod-vendor">{vendor}</p>
                     </header>
                     <div className="itemCard-prices">
                         {price_old !== null && (
                             <p className="old-price" style={{ margin: 0, color: '#777' }}>
-                                <s><span className="price-cur"><strong className="price">{price_old}</strong><small className="currency">BYN</small></span></s>
+                                <s><PriceWithCurrency price={price_old} /></s>
                             </p>
                         )}
                         <p className="prod-price">
-                            <span data-href={`https://avtoshina.by/order/tire/${id}`} className="to-cart js-buy pull-right">
-                                <span className="fa fa-shopping-cart" aria-hidden="true" />
-                                <span className="js-txt">Купить</span>
-                            </span>
+                            {isSellable() && (
+                                <span data-href={`/order/tire/${id}`} className="to-cart js-buy pull-right">
+                                    <span className="fa fa-shopping-cart" aria-hidden="true" />
+                                    <span className="js-txt">Купить</span>
+                                </span>
+                            )}
                             <span className="highlight">
-                                <span className="price-cur"><strong className="price">{price}</strong><small className="currency">BYN</small></span>
+                                <PriceWithCurrency price={price} />
                             </span>
                         </p>
                     </div>

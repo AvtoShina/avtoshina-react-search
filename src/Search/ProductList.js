@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import ProductModel from "./ProductModel";
-import './../css/search.css'; // Import custom CSS file
+import BrandFilter from "./Filters/BrandFilter";
+import WidthFilter from "./Filters/WidthFilter";
+import HeightFilter from "./Filters/HeightFilter";
+import DiameterFilter from "./Filters/DiameterFilter";
+import SeasonFilter from "./Filters/SeasonFilter";
+import './../css/search.css';
 
 function ProductList() {
     const [products, setProducts] = useState([]);
@@ -22,7 +27,7 @@ function ProductList() {
 
     useEffect(() => {
         fetchProducts();
-    }, []);
+    });
 
     const fetchProducts = () => {
         const query = new URLSearchParams(filters).toString();
@@ -36,22 +41,20 @@ function ProductList() {
             .then(data => {
                 setProducts(data.items || []);
                 setMeta(data.meta || { total: 0, from: 0, to: 0 });
+                const filters = data.filters || [];
 
-                if (data.filters) {
-                    setVendors(data.filters.vendors || []);
-                    setWidths(data.filters.widths || []);
-                    setHeights(data.filters.heights || []);
-                    setDiameters(data.filters.diameters || []);
-                    setSeasons(data.filters.seasons || []);
+                if (filters) {
+                    setVendors(filters.vendors || []);
+                    setWidths(filters.widths || []);
+                    setHeights(filters.heights || []);
+                    setDiameters(filters.diameters || []);
+                    setSeasons(filters.seasons || []);
                 }
 
-                // Update the URL in the browser
-                const newUrl = `${window.location.pathname}?${query}`;
-                window.history.pushState({ path: newUrl }, '', newUrl);
+                updateBrowserUrl(query);
             })
             .catch(error => {
                 console.error('Error fetching products:', error);
-                // Handle error or display a message to the user
             });
     };
 
@@ -62,6 +65,11 @@ function ProductList() {
 
     const handleSortChange = (sortField, sortOrder) => {
         setFilters({ ...filters, order: sortField, dir: sortOrder });
+    };
+
+    const updateBrowserUrl = (query) => {
+        const newUrl = `${window.location.pathname}?${query}`;
+        window.history.pushState({ path: newUrl }, '', newUrl);
     };
 
     return (
@@ -98,70 +106,11 @@ function ProductList() {
 
                                         <form method="get">
                                             <div className="row">
-                                                <fieldset className="col-md-12">
-                                                    <legend>Бренд</legend>
-                                                    <div className="select has-select2-label">
-                                                        <label htmlFor="sFilter-vendor" className="label4-select2">Бренд</label>
-                                                        <select name="vendor" onChange={handleFilterChange}>
-                                                            <option value="">Выберите бренд</option>
-                                                            {vendors.map(vendor => (
-                                                                <option key={`vendor${vendor.id}`} value={vendor.id}>{vendor.name}</option>
-                                                            ))}
-                                                        </select>
-                                                    </div>
-                                                </fieldset>
-
-                                                <fieldset className="col-md-12">
-                                                    <legend>Ширина</legend>
-                                                    <div className="select">
-                                                        <label htmlFor="sFilter-width" className="label4-select2">Ширина</label>
-                                                        <select name="width" onChange={handleFilterChange}>
-                                                            <option value="">Выберите ширину</option>
-                                                            {widths.map(width => (
-                                                                <option key={`width${width}`} value={width}>{width}</option>
-                                                            ))}
-                                                        </select>
-                                                    </div>
-                                                </fieldset>
-
-                                                <fieldset className="col-md-12">
-                                                    <legend>Высота</legend>
-                                                    <div className="select">
-                                                        <label htmlFor="sFilter-height" className="label4-select2">Высота</label>
-                                                        <select name="height" onChange={handleFilterChange}>
-                                                            <option value="">Выберите высоту</option>
-                                                            {heights.map(height => (
-                                                                <option key={`height${height}`} value={height}>{height}</option>
-                                                            ))}
-                                                        </select>
-                                                    </div>
-                                                </fieldset>
-
-                                                <fieldset className="col-md-12">
-                                                    <legend>Диаметр</legend>
-                                                    <div className="select">
-                                                        <label htmlFor="sFilter-diameter" className="label4-select2">Диаметр</label>
-                                                        <select name="diameter" onChange={handleFilterChange}>
-                                                            <option value="">Выберите диаметр</option>
-                                                            {diameters.map(diameter => (
-                                                                <option key={`diameter${diameter}`} value={diameter}>{diameter}</option>
-                                                            ))}
-                                                        </select>
-                                                    </div>
-                                                </fieldset>
-
-                                                <fieldset className="col-md-12">
-                                                    <legend>Сезон</legend>
-                                                    <div className="select">
-                                                        <label htmlFor="sFilter-season" className="label4-select2">Сезон</label>
-                                                        <select name="season" onChange={handleFilterChange}>
-                                                            <option value="">Выберите сезон</option>
-                                                            {seasons.map(season => (
-                                                                <option key={`season${season}`} value={season}>{season}</option>
-                                                            ))}
-                                                        </select>
-                                                    </div>
-                                                </fieldset>
+                                                <BrandFilter vendors={vendors} handleFilterChange={handleFilterChange} />
+                                                <WidthFilter widths={widths} handleFilterChange={handleFilterChange} />
+                                                <HeightFilter heights={heights} handleFilterChange={handleFilterChange} />
+                                                <DiameterFilter diameters={diameters} handleFilterChange={handleFilterChange} />
+                                                <SeasonFilter seasons={seasons} handleFilterChange={handleFilterChange} />
                                             </div>
                                         </form>
                                     </div>
@@ -178,7 +127,7 @@ function ProductList() {
 
                             <div className="view-products grid">
                                 {products.map(product => (
-                                    <ProductModel key={product.id} product={product}/>
+                                    <ProductModel key={`product${product.id}`} product={product}/>
                                 ))}
                             </div>
                         </main>

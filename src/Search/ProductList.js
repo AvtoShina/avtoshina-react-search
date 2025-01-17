@@ -15,12 +15,14 @@ function ProductList() {
         width: '',
         height: '',
         diameter: '',
-        season: ''
+        season: '',
+        order: 'price',
+        dir: 'asc'
     });
 
     useEffect(() => {
         fetchProducts();
-    }, [filters]);
+    }, []);
 
     const fetchProducts = () => {
         const query = new URLSearchParams(filters).toString();
@@ -42,6 +44,10 @@ function ProductList() {
                     setDiameters(data.filters.diameters || []);
                     setSeasons(data.filters.seasons || []);
                 }
+
+                // Update the URL in the browser
+                const newUrl = `${window.location.pathname}?${query}`;
+                window.history.pushState({ path: newUrl }, '', newUrl);
             })
             .catch(error => {
                 console.error('Error fetching products:', error);
@@ -52,6 +58,10 @@ function ProductList() {
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
         setFilters({ ...filters, [name]: value });
+    };
+
+    const handleSortChange = (sortField, sortOrder) => {
+        setFilters({ ...filters, order: sortField, dir: sortOrder });
     };
 
     return (
@@ -68,7 +78,10 @@ function ProductList() {
                     <h2>Найдено {meta.total} шин</h2>
 
                     <p>Показаны товары с {meta.from} по {meta.to}</p>
-                    <p>Сортировка: <a href="#todo">Сначала дешевые</a> <a href="#todo">Сначала дорогие</a></p>
+                    <p>Сортировка:
+                        <a href="#sort-asc" onClick={() => handleSortChange('price', 'asc')}>Сначала дешевые</a>
+                        <a href="#sort-desc" onClick={() => handleSortChange('price', 'desc')}>Сначала дорогие</a>
+                    </p>
                 </div>
             </section>
 
@@ -92,7 +105,7 @@ function ProductList() {
                                                         <select name="vendor" onChange={handleFilterChange}>
                                                             <option value="">Выберите бренд</option>
                                                             {vendors.map(vendor => (
-                                                                <option key={'vendor' + vendor.id} value={vendor.id}>{vendor.name}</option>
+                                                                <option key={`vendor${vendor.id}`} value={vendor.id}>{vendor.name}</option>
                                                             ))}
                                                         </select>
                                                     </div>
@@ -105,7 +118,7 @@ function ProductList() {
                                                         <select name="width" onChange={handleFilterChange}>
                                                             <option value="">Выберите ширину</option>
                                                             {widths.map(width => (
-                                                                <option key={'width' + width} value={width}>{width}</option>
+                                                                <option key={`width${width}`} value={width}>{width}</option>
                                                             ))}
                                                         </select>
                                                     </div>
@@ -118,7 +131,7 @@ function ProductList() {
                                                         <select name="height" onChange={handleFilterChange}>
                                                             <option value="">Выберите высоту</option>
                                                             {heights.map(height => (
-                                                                <option key={'height' + height} value={height}>{height}</option>
+                                                                <option key={`height${height}`} value={height}>{height}</option>
                                                             ))}
                                                         </select>
                                                     </div>
@@ -131,7 +144,7 @@ function ProductList() {
                                                         <select name="diameter" onChange={handleFilterChange}>
                                                             <option value="">Выберите диаметр</option>
                                                             {diameters.map(diameter => (
-                                                                <option key={'diameter' + diameter} value={diameter}>{diameter}</option>
+                                                                <option key={`diameter${diameter}`} value={diameter}>{diameter}</option>
                                                             ))}
                                                         </select>
                                                     </div>
@@ -144,7 +157,7 @@ function ProductList() {
                                                         <select name="season" onChange={handleFilterChange}>
                                                             <option value="">Выберите сезон</option>
                                                             {seasons.map(season => (
-                                                                <option key={'season' + season} value={season}>{season}</option>
+                                                                <option key={`season${season}`} value={season}>{season}</option>
                                                             ))}
                                                         </select>
                                                     </div>

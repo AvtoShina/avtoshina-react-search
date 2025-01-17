@@ -1,4 +1,7 @@
-# Getting Started with Create React App
+# The avtoshina-react-search project.
+
+yarn install
+yarn start
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

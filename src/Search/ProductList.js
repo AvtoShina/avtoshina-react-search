@@ -9,22 +9,50 @@ function ProductList() {
     const [heights, setHeights] = useState([]);
     const [diameters, setDiameters] = useState([]);
     const [seasons, setSeasons] = useState([]);
-    const [meta, setMeta] = useState({ total: 0 });
+    const [meta, setMeta] = useState({ total: 0, from: 0, to: 0 });
+    const [filters, setFilters] = useState({
+        vendor: '',
+        width: '',
+        height: '',
+        diameter: '',
+        season: ''
+    });
 
     useEffect(() => {
-        // Replace with your API call
-        fetch('https://avtoshina.by/api/v1/products')
-            .then(response => response.json())
+        fetchProducts();
+    }, [filters]);
+
+    const fetchProducts = () => {
+        const query = new URLSearchParams(filters).toString();
+        fetch(`https://avtoshina.by/api/v1/products?${query}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 setProducts(data.items || []);
-                setVendors(data.filters.vendors || []);
-                setWidths(data.filters.widths || []);
-                setHeights(data.filters.heights || []);
-                setDiameters(data.filters.diameters || []);
-                setSeasons(data.filters.seasons || []);
-                setMeta(data.meta || { total: 0 });
+                setMeta(data.meta || { total: 0, from: 0, to: 0 });
+
+                if (data.filters) {
+                    setVendors(data.filters.vendors || []);
+                    setWidths(data.filters.widths || []);
+                    setHeights(data.filters.heights || []);
+                    setDiameters(data.filters.diameters || []);
+                    setSeasons(data.filters.seasons || []);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching products:', error);
+                // Handle error or display a message to the user
             });
-    }, []);
+    };
+
+    const handleFilterChange = (e) => {
+        const { name, value } = e.target;
+        setFilters({ ...filters, [name]: value });
+    };
 
     return (
         <div>
@@ -33,11 +61,11 @@ function ProductList() {
                     <h1 className="pg-title search-header">
                         <span>
                             <span className="search-header__title">Шины</span>
-                            <span className="search-header__count">{products.length} товаров</span>
+                            <span className="search-header__count">{meta.total} товаров</span>
                         </span>
                     </h1>
 
-                    <h2>Найдено {products.length} шин</h2>
+                    <h2>Найдено {meta.total} шин</h2>
 
                     <p>Показаны товары с {meta.from} по {meta.to}</p>
                     <p>Сортировка: <a href="#todo">Сначала дешевые</a> <a href="#todo">Сначала дорогие</a></p>
@@ -61,9 +89,10 @@ function ProductList() {
                                                     <legend>Бренд</legend>
                                                     <div className="select has-select2-label">
                                                         <label htmlFor="sFilter-vendor" className="label4-select2">Бренд</label>
-                                                        <select name="vendor">
+                                                        <select name="vendor" onChange={handleFilterChange}>
+                                                            <option value="">Выберите бренд</option>
                                                             {vendors.map(vendor => (
-                                                                <option key={vendor.id} value={vendor.id}>{vendor.name}</option>
+                                                                <option key={'vendor' + vendor.id} value={vendor.id}>{vendor.name}</option>
                                                             ))}
                                                         </select>
                                                     </div>
@@ -73,9 +102,10 @@ function ProductList() {
                                                     <legend>Ширина</legend>
                                                     <div className="select">
                                                         <label htmlFor="sFilter-width" className="label4-select2">Ширина</label>
-                                                        <select name="width">
+                                                        <select name="width" onChange={handleFilterChange}>
+                                                            <option value="">Выберите ширину</option>
                                                             {widths.map(width => (
-                                                                <option key={width} value={width}>{width}</option>
+                                                                <option key={'width' + width} value={width}>{width}</option>
                                                             ))}
                                                         </select>
                                                     </div>
@@ -85,9 +115,10 @@ function ProductList() {
                                                     <legend>Высота</legend>
                                                     <div className="select">
                                                         <label htmlFor="sFilter-height" className="label4-select2">Высота</label>
-                                                        <select name="height">
+                                                        <select name="height" onChange={handleFilterChange}>
+                                                            <option value="">Выберите высоту</option>
                                                             {heights.map(height => (
-                                                                <option key={height} value={height}>{height}</option>
+                                                                <option key={'height' + height} value={height}>{height}</option>
                                                             ))}
                                                         </select>
                                                     </div>
@@ -97,9 +128,10 @@ function ProductList() {
                                                     <legend>Диаметр</legend>
                                                     <div className="select">
                                                         <label htmlFor="sFilter-diameter" className="label4-select2">Диаметр</label>
-                                                        <select name="diameter">
+                                                        <select name="diameter" onChange={handleFilterChange}>
+                                                            <option value="">Выберите диаметр</option>
                                                             {diameters.map(diameter => (
-                                                                <option key={diameter} value={diameter}>{diameter}</option>
+                                                                <option key={'diameter' + diameter} value={diameter}>{diameter}</option>
                                                             ))}
                                                         </select>
                                                     </div>
@@ -109,9 +141,10 @@ function ProductList() {
                                                     <legend>Сезон</legend>
                                                     <div className="select">
                                                         <label htmlFor="sFilter-season" className="label4-select2">Сезон</label>
-                                                        <select name="season">
+                                                        <select name="season" onChange={handleFilterChange}>
+                                                            <option value="">Выберите сезон</option>
                                                             {seasons.map(season => (
-                                                                <option key={season} value={season}>{season}</option>
+                                                                <option key={'season' + season} value={season}>{season}</option>
                                                             ))}
                                                         </select>
                                                     </div>

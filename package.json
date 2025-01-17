@@ -1,5 +1,5 @@
 {
-  "name": "my-app",
+  "name": "avtoshina-react-search",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -26,14 +26,14 @@
   },
   "browserslist": {
     "production": [
-      ">0.2%",
+      ">0.1%",
       "not dead",
       "not op_mini all"
     ],
     "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
+      "last 15 chrome version",
+      "last 10 firefox version",
+      "last 5 safari version"
     ]
   }
 }

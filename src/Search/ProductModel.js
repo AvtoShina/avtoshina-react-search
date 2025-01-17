@@ -1,7 +1,41 @@
 import React from 'react';
 
 const ProductModel = ({ product }) => {
-    const { id, zoomos_id, price, price_old, available, quantity, category_id, category_name, delivery, type_prefix, vendor, vendor_name, model, description, picture, purpose, seat_diameter, season, profile_height, width, release_date, run_flat, load_index, speed_index, construction, type, spikes, created_at, updated_at, importer, service_center, spikes_possibility, source, metric } = product;
+    const {
+        id,
+        price,
+        price_old,
+        available,
+        quantity,
+        category_id,
+        category_name,
+        delivery,
+        type_prefix,
+        vendor,
+        vendor_name,
+        model,
+        description,
+        picture,
+        purpose,
+        seat_diameter,
+        season,
+        profile_height,
+        width,
+        release_date,
+        run_flat,
+        load_index,
+        speed_index,
+        construction,
+        type,
+        spikes,
+        created_at,
+        updated_at,
+        importer,
+        service_center,
+        spikes_possibility,
+        source,
+        metric
+    } = product;
 
     return (
         <a title={`Купить ${model} в Минске`} href={`https://avtoshina.by/tire/${id}`} className="prod-link">

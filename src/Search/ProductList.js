@@ -26,37 +26,41 @@ function ProductList() {
     });
 
     useEffect(() => {
+        const fetchProducts = () => {
+            const query = new URLSearchParams(filters).toString();
+            fetch(`https://avtoshina.by/api/v1/products?${query}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    setProducts(data.items || []);
+                    setMeta(data.meta || { total: 0, from: 0, to: 0 });
+                    const filters = data.filters || [];
+
+                    if (filters) {
+                        setVendors(filters.vendors || []);
+                        setWidths(filters.widths || []);
+                        setHeights(filters.heights || []);
+                        setDiameters(filters.diameters || []);
+                        setSeasons(filters.seasons || []);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching pgiroducts:', error);
+                });
+        };
+
         fetchProducts();
-    });
+    }, [filters]); // Запускается только при изменении filters
 
-    const fetchProducts = () => {
+    useEffect(() => {
         const query = new URLSearchParams(filters).toString();
-        fetch(`https://avtoshina.by/api/v1/products?${query}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                setProducts(data.items || []);
-                setMeta(data.meta || { total: 0, from: 0, to: 0 });
-                const filters = data.filters || [];
-
-                if (filters) {
-                    setVendors(filters.vendors || []);
-                    setWidths(filters.widths || []);
-                    setHeights(filters.heights || []);
-                    setDiameters(filters.diameters || []);
-                    setSeasons(filters.seasons || []);
-                }
-
-                updateBrowserUrl(query);
-            })
-            .catch(error => {
-                console.error('Error fetching products:', error);
-            });
-    };
+        const newUrl = `${window.location.pathname}?${query}`;
+        window.history.pushState({ path: newUrl }, '', newUrl);
+    }, [filters]); // Обновление URL при изменении filters
 
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
@@ -65,11 +69,6 @@ function ProductList() {
 
     const handleSortChange = (sortField, sortOrder) => {
         setFilters({ ...filters, order: sortField, dir: sortOrder });
-    };
-
-    const updateBrowserUrl = (query) => {
-        const newUrl = `${window.location.pathname}?${query}`;
-        window.history.pushState({ path: newUrl }, '', newUrl);
     };
 
     return (
@@ -127,7 +126,7 @@ function ProductList() {
 
                             <div className="view-products grid">
                                 {products.map(product => (
-                                    <ProductModel key={`product${product.id}`} product={product}/>
+                                    <ProductModel key={`product${product.id}`} product={product} />
                                 ))}
                             </div>
                         </main>

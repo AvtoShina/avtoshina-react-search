@@ -1,0 +1,74 @@
+form .filter {
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, .2);
+    box-sizing: border-box;
+    border-radius: 9px
+}
+
+form .filter:hover {
+    border-color: #757575
+}
+
+form .filter:active, form .filter:focus {
+    border-color: #0d97ef;
+    box-shadow: 0 0 5px lighter(#0d97ef, 50%)
+}
+
+form .select2-container--default .select2-selection--single {
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 9px
+}
+
+select {
+    background: 0 0;
+    border: 0 solid transparent;
+    border-bottom: 1px solid #e3e3e3;
+    border-radius: 0;
+    box-shadow: none;
+    color: #4e575f;
+    display: block;
+    outline: 0;
+    padding: 8px 6px;
+    width: 100%;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+    padding-right: 25px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none !important;
+    font-size: 1.4rem
+}
+
+select:active, select:focus, select:hover {
+    border-color: #0d97ef;
+    box-shadow: 0 0 5px lighter(#0d97ef, 50%)
+}
+
+.has-float-label label {
+    min-width: fit-content
+}
+
+.has-float-label select {
+    padding: 10px 14px 8px
+}
+
+.has-select2-label {
+    position: relative
+}
+
+.has-select2-label label {
+    position: absolute;
+    z-index: 3;
+    top: -.5em;
+    left: 12px;
+    background: #fff;
+    padding: 0 2px 1px;
+    margin: 0;
+    line-height: 1;
+    color: #424242;
+    font-size: 13px;
+    font-weight: 600
+}

@@ -1,0 +1,41 @@
+.d-flex {
+    display: flex
+}
+
+@media (min-width: 1025px) {
+    .desktop-flex {
+        display: flex !important
+    }
+}
+
+.flex {
+    display: -webkit-box !important;
+    display: -ms-flexbox !important;
+    display: -webkit-flex !important;
+    display: flex !important
+}
+
+
+.flex > .videoPreveiw-item.flex ~ .flexItem_empty {
+    margin-left: 5px;
+    margin-right: 5px
+}
+
+.flex-wrap_wrap {
+    -ms-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap
+}
+
+.flex-alignItems_bottom {
+    -webkit-box-align: end;
+    -ms-flex-align: end;
+    -webkit-align-items: flex-end;
+    align-items: flex-end
+}
+
+
+.italic, em, i {
+    font-style: italic
+}
+

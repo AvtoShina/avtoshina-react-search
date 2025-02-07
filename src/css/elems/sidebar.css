@@ -1,0 +1,15 @@
+
+.sidebar .widget {
+    margin-bottom: 3rem
+}
+
+.sidebar .b-categories-list .title, .sidebar .block-title {
+    color: #121212;
+    font-size: 24px
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        margin-top: 25px
+    }
+}

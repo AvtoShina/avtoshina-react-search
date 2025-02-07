@@ -1,0 +1,391 @@
+@media screen and (min-width: 600px) {
+    .view-products.grid {
+        display: grid;
+        grid-template-columns:repeat(auto-fit, minmax(190px, 1fr))
+    }
+
+    .view-products.grid .art-card {
+        min-height: 317px
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .view-products.grid {
+        grid-template-columns:repeat(auto-fit, minmax(200px, 1fr))
+    }
+}
+
+
+.art-card {
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    border-radius: 9px
+}
+
+.art-card .itemCard-hover {
+    overflow: hidden;
+    height: 0;
+    transition: max-height .3s ease;
+    background: rgba(255, 255, 255, .8);
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.art-card .itemCard-hover p {
+    font-size: 20px;
+    font-weight: 700
+}
+
+.art-card:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, .3)
+}
+
+.art-card:hover .itemCard-hover {
+    height: 146px
+}
+
+.art-card .prod-title {
+    font-size: 14px;
+    font-weight: 700
+}
+
+.art-card .prod-installment {
+    color: rgba(0, 0, 0, .7)
+}
+
+.art-card .prod-installment .small {
+    font-size: 8px
+}
+
+.art-card .highlight {
+    font-size: 20px;
+    line-height: 24px;
+    color: #000
+}
+
+.art-card p.old-price {
+    margin: 0;
+    line-height: 1.2;
+    color: #777
+}
+
+.art-card .itemCard-title {
+    font-size: 16px;
+    color: #000
+}
+
+.art-card .itemCard-title a {
+    color: #000
+}
+
+.art-card .itemCard-title a:visited {
+    color: #000
+}
+
+.art-card .itemCard-title p.prod-vendor {
+    font-size: 14px;
+    margin: 0;
+    line-height: 1.2
+}
+
+a.prod-link:hover {
+    text-decoration: none
+}
+
+
+
+.itemCard-inner {
+    position: relative
+}
+
+.itemCard-inner .itemCard-season {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center
+}
+
+.itemCard-inner .itemCard-season svg {
+    width: auto;
+    height: auto;
+    max-width: 30px;
+    max-height: 30px;
+    margin-left: 6px
+}
+
+
+.view-products.grid .itemCard-inner {
+    text-align: center
+}
+
+.view-products.grid .itemCard-title {
+    margin-bottom: 15px
+}
+
+.view-products.grid .itemCard-misc {
+    clear: both;
+    display: inline-block;
+    width: 100%;
+    margin: 15px 0 12px
+}
+
+.view-products.grid .itemCard-misc .itemCard-avail {
+    float: right
+}
+
+.view-products.list .itemCard-inner {
+    display: flex;
+    justify-content: space-around;
+    align-items: center
+}
+
+
+.itemCard-abs {
+    background: #fff;
+    box-sizing: border-box;
+    padding: 10px 3%;
+    position: relative
+}
+
+.itemCard-widen {
+    margin-bottom: 25px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 0
+}
+
+.itemCard-widen .statusList-itemCard {
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    margin: -36px 0 20px -15px;
+    position: static;
+    width: calc(100% + 15px)
+}
+
+.itemCard-widen .statusList-itemCard li {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-right: -8px;
+    padding-left: 14px
+}
+
+
+.itemCard-widen_rowCont {
+    padding-bottom: 27px !important
+}
+
+.itemCard-widen_wrapImg {
+    align-items: center;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    white-space: nowrap;
+    width: 100%;
+    max-height: 200px
+}
+
+.itemCard-widen_wrapImg img {
+    display: inline-block;
+    vertical-align: middle
+}
+
+.itemCard-widen_wrapImg::after {
+    display: inline-block;
+    vertical-align: middle
+}
+
+.itemCard-widen_title {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 15px;
+    line-height: 1.4
+}
+
+.itemCard-infoList {
+    clear: both;
+    color: #151516;
+    font-size: 13px;
+    margin-bottom: 20px;
+    max-width: 310px
+}
+
+.itemCard-infoList li {
+    margin-bottom: 8px;
+    line-height: 1.4
+}
+
+.itemCard-infoList_widen {
+    margin-bottom: 0
+}
+
+.itemCard-infoList_widen li {
+    margin-top: 8px;
+    margin-bottom: 0
+}
+
+
+.itemCard-widen_priceWrap {
+    margin-bottom: 40px
+}
+
+.itemCard-widen_price {
+    color: #b10000;
+    font-size: 28px;
+    white-space: nowrap
+}
+
+
+.itemCard-wide2 {
+    border: 1px solid #ccc;
+    box-shadow: none;
+    margin-bottom: 10px;
+    padding: 15px
+}
+
+.itemCard-wide2 .btnTrans {
+    margin-left: 20px
+}
+
+.itemCard-wide2 .title {
+    display: block;
+    font-size: 18px;
+    line-height: 1.5;
+    margin-bottom: 8px
+}
+
+.itemCard-wide2 .articul {
+    font-size: 13px;
+    color: #999;
+    margin-bottom: 17px
+}
+
+
+.itemCard-compact {
+    margin: 0 4px 25px;
+    vertical-align: top;
+    display: flex
+}
+
+.itemCard-compact:not(.itemCard-service) .itemCard-image img {
+    max-width: 70%;
+    max-height: 125px;
+    height: 100px
+}
+
+.itemCard-compact .itemCard-gift {
+    position: absolute;
+    left: 0;
+    top: 0
+}
+
+.itemCard-compact .itemCard-gift path, .itemCard-compact .itemCard-gift svg {
+    stroke: #0b99f3
+}
+
+.itemCard-compact .itemCard-price {
+    margin-top: auto
+}
+
+.itemCard-compact .itemCard-price_cells {
+    margin-top: auto
+}
+
+.itemCard-compact ~ .flexItem_empty {
+    display: inline-block;
+    margin: 0 4px 25px;
+    vertical-align: top
+}
+
+
+.itemCard-inner {
+    width: 100%
+}
+
+.itemCard-image {
+    clear: both;
+    display: block;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    min-width: 85px
+}
+
+.itemCard-image::before {
+    display: inline-block;
+    vertical-align: bottom
+}
+
+.itemCard-image img {
+    display: inline-block;
+    vertical-align: bottom;
+    max-width: 230px;
+    margin: auto
+}
+
+
+.itemCard-price {
+    color: #a90300;
+    font-size: 16px;
+    line-height: 20px;
+    margin-top: 20px;
+    position: relative;
+    padding: 12px 0;
+    min-height: 45px
+}
+
+.itemCard-price_cells {
+    color: #a90300;
+    font-size: 16px;
+    line-height: 20px;
+    margin-top: 20px;
+    position: relative;
+    padding: 12px 0;
+    min-height: 45px
+}
+
+.itemCard-new {
+    background: #fff;
+    box-shadow: 0 0 5px 4px #f4f4f4;
+    box-sizing: border-box;
+    position: relative
+}
+
+
+
+
+
+.availQuant {
+    font-size: 13px;
+    white-space: nowrap
+}
+
+.availQuant .lnk-txt {
+    color: inherit
+}
+
+.availQuant_yes {
+    color: #468c17
+}
+
+.availQuant_yes .lnk-inner {
+    color: #468c17
+}
+
+.availQuant_yes:hover span.lnk-inner {
+    color: #468c17
+}
+
+.availQuant-widen {
+    bottom: 0;
+    right: auto;
+    margin-top: 30px
+}
+

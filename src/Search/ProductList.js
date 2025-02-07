@@ -5,7 +5,7 @@ import WidthFilter from "./Filters/WidthFilter";
 import HeightFilter from "./Filters/HeightFilter";
 import DiameterFilter from "./Filters/DiameterFilter";
 import SeasonFilter from "./Filters/SeasonFilter";
-import './../css/search.css';
+import './../css/product-list.css';
 
 class ProductList extends Component {
     constructor(props) {
@@ -124,7 +124,7 @@ class ProductList extends Component {
                                             </h3>
 
                                             <form method="get">
-                                                <div className="row">
+                                                <div className="b-filters">
                                                     <BrandFilter vendors={vendors} handleFilterChange={this.handleFilterChange} />
                                                     <WidthFilter widths={widths} handleFilterChange={this.handleFilterChange} />
                                                     <HeightFilter heights={heights} handleFilterChange={this.handleFilterChange} />

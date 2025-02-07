@@ -3,7 +3,6 @@ import React from 'react';
 const HeightFilter = ({ heights, handleFilterChange }) => {
     return (
         <fieldset className="col-md-12">
-            <legend>Высота</legend>
             <div className="select">
                 <label htmlFor="sFilter-height" className="label4-select2">Высота</label>
                 <select name="height" onChange={handleFilterChange}>

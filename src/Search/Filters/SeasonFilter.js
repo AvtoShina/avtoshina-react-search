@@ -3,7 +3,6 @@ import React from 'react';
 const SeasonFilter = ({ seasons, handleFilterChange }) => {
     return (
         <fieldset className="col-md-12">
-            <legend>Сезон</legend>
             <div className="select">
                 <label htmlFor="sFilter-season" className="label4-select2">Сезон</label>
                 <select name="season" onChange={handleFilterChange}>

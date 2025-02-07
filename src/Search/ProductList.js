@@ -26,12 +26,14 @@ class ProductList extends Component {
                 season: '',
                 order: 'price',
                 dir: 'asc'
-            }
+            },
+            apiEndpoint: '',
         };
     }
 
     componentDidMount() {
-        this.fetchProducts();
+        const apiEndpoint = document.querySelector('meta[name="api-endpoint"]').getAttribute('content');
+        this.setState({ apiEndpoint }, this.fetchProducts);
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -42,8 +44,9 @@ class ProductList extends Component {
     }
 
     fetchProducts = () => {
-        const query = new URLSearchParams(this.state.filters).toString();
-        fetch(`https://avtoshina.by/api/v1/products?${query}`)
+        const { filters, apiEndpoint } = this.state;
+        const query = new URLSearchParams(filters).toString();
+        fetch(`${apiEndpoint}/products?${query}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);

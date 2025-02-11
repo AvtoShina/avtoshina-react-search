@@ -36,10 +36,6 @@
     justify-content: center
 }
 
-.art-card .itemCard-hover p {
-    font-size: 20px;
-    font-weight: 700
-}
 
 .art-card:hover {
     box-shadow: 0 0 10px rgba(0, 0, 0, .3)
@@ -49,22 +45,11 @@
     height: 146px
 }
 
-.art-card .prod-title {
-    font-size: 14px;
-    font-weight: 700
-}
-
 .art-card .prod-installment {
     color: rgba(0, 0, 0, .7)
 }
 
-.art-card .prod-installment .small {
-    font-size: 8px
-}
-
 .art-card .highlight {
-    font-size: 20px;
-    line-height: 24px;
     color: #000
 }
 
@@ -75,7 +60,6 @@
 }
 
 .art-card .itemCard-title {
-    font-size: 16px;
     color: #000
 }
 
@@ -88,13 +72,15 @@
 }
 
 .art-card .itemCard-title p.prod-vendor {
-    font-size: 14px;
     margin: 0;
-    line-height: 1.2
+}
+
+a.prod-link {
+    text-decoration: none;
 }
 
 a.prod-link:hover {
-    text-decoration: none
+    text-decoration: none;
 }
 
 
@@ -204,7 +190,6 @@ a.prod-link:hover {
 
 .itemCard-widen_title {
     display: block;
-    font-size: 16px;
     margin-bottom: 15px;
     line-height: 1.4
 }
@@ -238,7 +223,6 @@ a.prod-link:hover {
 
 .itemCard-widen_price {
     color: #b10000;
-    font-size: 28px;
     white-space: nowrap
 }
 
@@ -256,15 +240,7 @@ a.prod-link:hover {
 
 .itemCard-wide2 .title {
     display: block;
-    font-size: 18px;
-    line-height: 1.5;
     margin-bottom: 8px
-}
-
-.itemCard-wide2 .articul {
-    font-size: 13px;
-    color: #999;
-    margin-bottom: 17px
 }
 
 
@@ -333,8 +309,6 @@ a.prod-link:hover {
 
 .itemCard-price {
     color: #a90300;
-    font-size: 16px;
-    line-height: 20px;
     margin-top: 20px;
     position: relative;
     padding: 12px 0;
@@ -343,8 +317,6 @@ a.prod-link:hover {
 
 .itemCard-price_cells {
     color: #a90300;
-    font-size: 16px;
-    line-height: 20px;
     margin-top: 20px;
     position: relative;
     padding: 12px 0;
@@ -363,7 +335,6 @@ a.prod-link:hover {
 
 
 .availQuant {
-    font-size: 13px;
     white-space: nowrap
 }
 

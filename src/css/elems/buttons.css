@@ -1,3 +1,14 @@
+.to-cart {
+    color: #0b98f2;
+    border: 1px solid transparent;
+    padding: 2px 8px;
+    border-radius: 4px;
+    transition: border .3s ease;
+}
+
+a:hover .to-cart {
+    border-color: #0b98f2;
+}
 
 .btn {
     display: inline-block;
@@ -11,8 +22,6 @@
     background-image: none;
     border: 1px solid transparent;
     padding: 6px 12px;
-    font-size: 14px;
-    line-height: 1.42857143;
     border-radius: 4px;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -323,22 +332,15 @@ a.btn.disabled, fieldset[disabled] a.btn {
 
 .btn-group-lg > .btn, .btn-lg {
     padding: 10px 16px;
-    font-size: 18px;
-    line-height: 1.3333333;
     border-radius: 6px
 }
 
 .btn-group-sm > .btn, .btn-sm {
     padding: 5px 10px;
-    font-size: 12px;
-    line-height: 1.5;
-    border-radius: 3px
 }
 
 .btn-group-xs > .btn, .btn-xs {
     padding: 1px 5px;
-    font-size: 12px;
-    line-height: 1.5;
     border-radius: 3px
 }
 

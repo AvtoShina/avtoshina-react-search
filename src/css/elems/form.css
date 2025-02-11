@@ -20,6 +20,7 @@ form .select2-container--default .select2-selection--single {
 }
 
 select {
+    cursor: pointer;
     background: 0 0;
     border: 0 solid transparent;
     border-bottom: 1px solid #e3e3e3;
@@ -28,47 +29,14 @@ select {
     color: #4e575f;
     display: block;
     outline: 0;
-    padding: 8px 6px;
     width: 100%;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -ms-box-sizing: border-box;
     box-sizing: border-box;
-    padding-right: 25px;
+    padding: 8px 25px 8px 6px;
     -webkit-appearance: none;
     -moz-appearance: none;
     -ms-appearance: none;
     appearance: none !important;
-    font-size: 1.4rem
-}
-
-select:active, select:focus, select:hover {
-    border-color: #0d97ef;
-    box-shadow: 0 0 5px lighter(#0d97ef, 50%)
-}
-
-.has-float-label label {
-    min-width: fit-content
-}
-
-.has-float-label select {
-    padding: 10px 14px 8px
-}
-
-.has-select2-label {
-    position: relative
-}
-
-.has-select2-label label {
-    position: absolute;
-    z-index: 3;
-    top: -.5em;
-    left: 12px;
-    background: #fff;
-    padding: 0 2px 1px;
-    margin: 0;
-    line-height: 1;
-    color: #424242;
-    font-size: 13px;
-    font-weight: 600
 }

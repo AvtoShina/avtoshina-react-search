@@ -95,20 +95,29 @@ class ProductList extends Component {
             <div>
                 <section className="s-products s-category">
                     <div className="container">
-                        <h1 className="pg-title search-header">
-                            <span>
-                                <span className="search-header__title">Шины</span>
-                                <span className="search-header__count">{meta.total} товаров</span>
-                            </span>
-                        </h1>
+                        <div className="b-meta">
+                            <div className="meta-total">
+                                <div className="meta-found">
+                                    Найдено {meta.total} шин
+                                </div>
 
-                        <h2>Найдено {meta.total} шин</h2>
+                                <div className="meta-from-to">
+                                    Показаны товары с {meta.from} по {meta.to}
+                                </div>
+                            </div>
 
-                        <p>Показаны товары с {meta.from} по {meta.to}</p>
-                        <p>Сортировка:
-                            <a href="#sort-asc" onClick={() => this.handleSortChange('price', 'asc')}>Сначала дешевые</a>
-                            <a href="#sort-desc" onClick={() => this.handleSortChange('price', 'desc')}>Сначала дорогие</a>
-                        </p>
+                            <div className="meta-sort">
+                                <span className="sort-title">Сортировка:</span>
+
+                                <a href="#sort-asc" onClick={() => this.handleSortChange('price', 'asc')}>
+                                    Сначала дешевые
+                                </a>
+
+                                <a href="#sort-desc" onClick={() => this.handleSortChange('price', 'desc')}>
+                                    Сначала дорогие
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </section>
 

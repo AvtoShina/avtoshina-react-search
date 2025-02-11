@@ -3,7 +3,7 @@ import React from 'react';
 const BrandFilter = ({ vendors, handleFilterChange }) => {
     return (
         <fieldset className="col-md-12">
-            <div className="select has-select2-label">
+            <div className="select select-box">
                 <label htmlFor="sFilter-vendor" className="label4-select2">Бренд</label>
                 <select name="vendor" onChange={handleFilterChange}>
                     <option value="">Выберите бренд</option>

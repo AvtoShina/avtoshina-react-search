@@ -35,5 +35,8 @@
       "last 10 firefox version",
       "last 5 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-private-property-in-object": "^7.25.9"
   }
 }

@@ -8,7 +8,7 @@ function App() {
         <div className="pg-wrap">
             <Helmet>
                 <meta charSet="utf-8"/>
-                <title>Подобрать шины в Минске | AvtoShina.By</title>
+                <title>Подобрать шины</title>
             </Helmet>
 
             <section className="s-main -tire">

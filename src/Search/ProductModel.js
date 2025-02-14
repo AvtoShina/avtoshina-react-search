@@ -13,6 +13,8 @@ const ProductModel = ({ product }) => {
         vendor,
         model,
         picture,
+        href,
+        title,
         // purpose,
         // seat_diameter,
         // season,
@@ -32,7 +34,7 @@ const ProductModel = ({ product }) => {
     };
 
     return (
-        <a title={`Купить ${model} в Минске`} href={`https://avtoshina.by/tire/${id}`} className="prod-link">
+        <a title={title} href={href} className="prod-link">
             <article className="art-card itemCard-abs itemCard-compact">
                 <div className="itemCard-inner">
                     <div className="itemCard-image">
@@ -52,7 +54,7 @@ const ProductModel = ({ product }) => {
                     </header>
                     <div className="itemCard-prices">
                         {price_old !== null && (
-                            <p className="old-price" style={{ margin: 0, color: '#777' }}>
+                            <p className="old-price">
                                 <s><PriceWithCurrency price={price_old} /></s>
                             </p>
                         )}

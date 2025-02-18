@@ -14,7 +14,7 @@ function App() {
             <section className="s-main -tire">
                 <div className="main-wrapper">
                     <section className="s-products s-category">
-                        <div className="container">
+                        <div className="rs-container">
                             <ProductList/>
                         </div>
                     </section>

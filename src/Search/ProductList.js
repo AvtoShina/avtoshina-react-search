@@ -94,7 +94,7 @@ class ProductList extends Component {
         return (
             <div>
                 <section className="s-products s-category">
-                    <div className="container">
+                    <div className="rs-container">
                         <div className="b-meta">
                             <div className="meta-total">
                                 <div className="meta-found">
@@ -122,9 +122,9 @@ class ProductList extends Component {
                 </section>
 
                 <section className="s-products s-list s-index">
-                    <div className="container">
-                        <div className="row main-row">
-                            <aside className="col-md-3 sidebar">
+                    <div className="rs-container">
+                        <div className="rs-main-row">
+                            <aside className="rs-sidebar">
                                 <div className="sidebar">
                                     <div className="widget">
                                         <div className="searchform s-form searchform-sm">
@@ -132,8 +132,8 @@ class ProductList extends Component {
                                                 Подбор по параметрам
                                             </h3>
 
-                                            <form method="get">
-                                                <div className="b-filters">
+                                            <form method="get" className="rs-filter-form">
+                                                <div className="rs-filters">
                                                     <BrandFilter vendors={vendors} handleFilterChange={this.handleFilterChange} />
                                                     <WidthFilter widths={widths} handleFilterChange={this.handleFilterChange} />
                                                     <HeightFilter heights={heights} handleFilterChange={this.handleFilterChange} />
@@ -146,7 +146,7 @@ class ProductList extends Component {
                                 </div>
                             </aside>
 
-                            <main className="main col-md-9 view-cat">
+                            <main className="rs-products">
                                 <p className="h3 search-result-header">
                                     <span className="search-result-title">
                                         Найдено {meta.total} шин.

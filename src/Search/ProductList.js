@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import ProductModel from "./ProductModel";
 import BrandFilter from "./Filters/BrandFilter";
 import WidthFilter from "./Filters/WidthFilter";
@@ -26,18 +26,14 @@ const ProductList = () => {
     });
     const [apiEndpoint, setApiEndpoint] = useState('');
 
-    useEffect(() => {
-        const apiEndpoint = document.querySelector('meta[name="api-endpoint"]').getAttribute('content');
-        setApiEndpoint(apiEndpoint);
-        fetchProducts(apiEndpoint, filters);
-    }, []);
+    const updateURL = useCallback(() => {
+        const query = new URLSearchParams(filters).toString();
+        console.log(filters, query);
+        const newUrl = `${window.location.pathname}?${query}`;
+        window.history.pushState({ path: newUrl }, '', newUrl);
+    }, [filters]);
 
-    useEffect(() => {
-        updateURL();
-        fetchProducts(apiEndpoint, filters);
-    }, [filters, apiEndpoint]);
-
-    const fetchProducts = (apiEndpoint, filters) => {
+    const fetchProducts = useCallback((apiEndpoint, filters) => {
         const query = new URLSearchParams(filters).toString();
         fetch(`${apiEndpoint}/products?${query}`)
             .then(response => {
@@ -54,17 +50,13 @@ const ProductList = () => {
                 setHeights(data.filters?.heights || []);
                 setDiameters(data.filters?.diameters || []);
                 setSeasons(data.filters?.seasons || []);
+                updateURL();
             })
             .catch(error => {
                 console.error('Error fetching products:', error);
             });
-    };
+    }, [updateURL]);
 
-    const updateURL = () => {
-        const query = new URLSearchParams(filters).toString();
-        const newUrl = `${window.location.pathname}?${query}`;
-        window.history.pushState({ path: newUrl }, '', newUrl);
-    };
 
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
@@ -81,6 +73,16 @@ const ProductList = () => {
             dir: sortOrder,
         }));
     };
+
+    useState(() => {
+        const apiEndpoint = document.querySelector('meta[name="api-endpoint"]').getAttribute('content');
+        setApiEndpoint(apiEndpoint);
+        fetchProducts(apiEndpoint, filters);
+    });
+
+    useEffect(() => {
+        fetchProducts(apiEndpoint, filters);
+    }, [filters, apiEndpoint, fetchProducts]);
 
     return (
         <div>

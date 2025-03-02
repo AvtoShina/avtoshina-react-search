@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useQueryState } from 'nuqs';
 import ProductModel from './ProductModel';
 import BrandFilter from './Filters/BrandFilter';
 import WidthFilter from './Filters/WidthFilter';
@@ -8,6 +9,15 @@ import SeasonFilter from './Filters/SeasonFilter';
 import './../css/product-list.css';
 
 const ProductList = () => {
+    // Define useQueryState hooks for each filter
+    const [vendor, setVendor] = useQueryState('vendor', { defaultValue: '' });
+    const [width, setWidth] = useQueryState('width', { defaultValue: '' });
+    const [height, setHeight] = useQueryState('height', { defaultValue: '' });
+    const [diameter, setDiameter] = useQueryState('diameter', { defaultValue: '' });
+    const [season, setSeason] = useQueryState('season', { defaultValue: '' });
+    const [order, setOrder] = useQueryState('order', { defaultValue: 'price' });
+    const [dir, setDir] = useQueryState('dir', { defaultValue: 'asc' });
+
     const [products, setProducts] = useState([]);
     const [vendors, setVendors] = useState([]);
     const [widths, setWidths] = useState([]);
@@ -15,22 +25,19 @@ const ProductList = () => {
     const [diameters, setDiameters] = useState([]);
     const [seasons, setSeasons] = useState([]);
     const [meta, setMeta] = useState({ total: 0, from: 0, to: 0 });
-    const [filters, setFilters] = useState({
-        vendor: '',
-        width: '',
-        height: '',
-        diameter: '',
-        season: '',
-        order: 'price',
-        dir: 'asc',
-    });
     const [apiEndpoint, setApiEndpoint] = useState('');
 
-    const updateURL = useCallback(() => {
-        const query = new URLSearchParams(filters).toString();
-        const newUrl = `${window.location.pathname}?${query}`;
-        window.history.pushState({ path: newUrl }, '', newUrl);
-    }, [filters]);
+    // Combine query state values into a single filters object
+    let filters;
+    filters = {
+        vendor,
+        width,
+        height,
+        diameter,
+        season,
+        order,
+        dir,
+    };
 
     const fetchProducts = useCallback(async (apiEndpoint, filters) => {
         if (!apiEndpoint) return;
@@ -53,26 +60,14 @@ const ProductList = () => {
             setHeights(data.filters?.heights || []);
             setDiameters(data.filters?.diameters || []);
             setSeasons(data.filters?.seasons || []);
-            updateURL();
         } catch (error) {
             console.error('Error fetching products:', error);
         }
-    }, [updateURL]);
-
-    const handleFilterChange = (e) => {
-        const { name, value } = e.target;
-        setFilters((prevFilters) => ({
-            ...prevFilters,
-            [name]: value,
-        }));
-    };
+    }, []);
 
     const handleSortChange = (sortField, sortOrder) => {
-        setFilters((prevFilters) => ({
-            ...prevFilters,
-            order: sortField,
-            dir: sortOrder,
-        }));
+        setOrder(sortField);
+        setDir(sortOrder);
     };
 
     useEffect(() => {
@@ -91,6 +86,27 @@ const ProductList = () => {
         }
     }, [filters, apiEndpoint, fetchProducts]);
 
+    // Handler functions to update the query parameters:
+    const handleBrandFilterChange = (e) => {
+        setVendor(e.target.value);
+    };
+
+    const handleWidthFilterChange = (e) => {
+        setWidth(e.target.value);
+    };
+
+    const handleHeightFilterChange = (e) => {
+        setHeight(e.target.value);
+    };
+
+    const handleDiameterFilterChange = (e) => {
+        setDiameter(e.target.value);
+    };
+
+    const handleSeasonFilterChange = (e) => {
+        setSeason(e.target.value);
+    };
+
     return (
         <div>
             <section className="s-products s-category">
@@ -108,12 +124,12 @@ const ProductList = () => {
 
                         <div className="meta-sort">
                             <span className="sort-title">Сортировка:</span>
-                            <a href="#sort-asc" onClick={() => handleSortChange('price', 'asc')}>
+                            <span onClick={() => handleSortChange('price', 'asc')}>
                                 Сначала дешевые
-                            </a>
-                            <a href="#sort-desc" onClick={() => handleSortChange('price', 'desc')}>
+                            </span>
+                            <span onClick={() => handleSortChange('price', 'desc')}>
                                 Сначала дорогие
-                            </a>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -132,11 +148,31 @@ const ProductList = () => {
 
                                         <form method="get" className="rs-filter-form">
                                             <div className="rs-filters">
-                                                <BrandFilter vendors={vendors} handleFilterChange={handleFilterChange} />
-                                                <WidthFilter widths={widths} handleFilterChange={handleFilterChange} />
-                                                <HeightFilter heights={heights} handleFilterChange={handleFilterChange} />
-                                                <DiameterFilter diameters={diameters} handleFilterChange={handleFilterChange} />
-                                                <SeasonFilter seasons={seasons} handleFilterChange={handleFilterChange} />
+                                                <BrandFilter
+                                                    vendors={vendors}
+                                                    handleFilterChange={handleBrandFilterChange}
+                                                    value={vendor}
+                                                />
+                                                <WidthFilter
+                                                    widths={widths}
+                                                    handleFilterChange={handleWidthFilterChange}
+                                                    value={width}
+                                                />
+                                                <HeightFilter
+                                                    heights={heights}
+                                                    handleFilterChange={handleHeightFilterChange}
+                                                    value={height}
+                                                />
+                                                <DiameterFilter
+                                                    diameters={diameters}
+                                                    handleFilterChange={handleDiameterFilterChange}
+                                                    value={diameter}
+                                                />
+                                                <SeasonFilter
+                                                    seasons={seasons}
+                                                    handleFilterChange={handleSeasonFilterChange}
+                                                    value={season}
+                                                />
                                             </div>
                                         </form>
                                     </div>

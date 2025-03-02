@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import ProductModel from "./ProductModel";
-import BrandFilter from "./Filters/BrandFilter";
-import WidthFilter from "./Filters/WidthFilter";
-import HeightFilter from "./Filters/HeightFilter";
-import DiameterFilter from "./Filters/DiameterFilter";
-import SeasonFilter from "./Filters/SeasonFilter";
+import ProductModel from './ProductModel';
+import BrandFilter from './Filters/BrandFilter';
+import WidthFilter from './Filters/WidthFilter';
+import HeightFilter from './Filters/HeightFilter';
+import DiameterFilter from './Filters/DiameterFilter';
+import SeasonFilter from './Filters/SeasonFilter';
 import './../css/product-list.css';
 
 const ProductList = () => {
@@ -28,60 +28,67 @@ const ProductList = () => {
 
     const updateURL = useCallback(() => {
         const query = new URLSearchParams(filters).toString();
-        console.log(filters, query);
         const newUrl = `${window.location.pathname}?${query}`;
         window.history.pushState({ path: newUrl }, '', newUrl);
     }, [filters]);
 
-    const fetchProducts = useCallback((apiEndpoint, filters) => {
-        const query = new URLSearchParams(filters).toString();
-        fetch(`${apiEndpoint}/products?${query}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                setProducts(data.items || []);
-                setMeta(data.meta || { total: 0, from: 0, to: 0 });
-                setVendors(data.filters?.vendors || []);
-                setWidths(data.filters?.widths || []);
-                setHeights(data.filters?.heights || []);
-                setDiameters(data.filters?.diameters || []);
-                setSeasons(data.filters?.seasons || []);
-                updateURL();
-            })
-            .catch(error => {
-                console.error('Error fetching products:', error);
-            });
-    }, [updateURL]);
+    const fetchProducts = useCallback(async (apiEndpoint, filters) => {
+        if (!apiEndpoint) return;
+        const defaultMeta = { total: 0, from: 0, to: 0 }; // Moved inside
 
+        try {
+            const query = new URLSearchParams(filters).toString();
+            const response = await fetch(`${apiEndpoint}/products?${query}`);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            setProducts(data.items || []);
+            setMeta(data.meta || defaultMeta);
+            setVendors(data.filters?.vendors || []);
+            setWidths(data.filters?.widths || []);
+            setHeights(data.filters?.heights || []);
+            setDiameters(data.filters?.diameters || []);
+            setSeasons(data.filters?.seasons || []);
+            updateURL();
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        }
+    }, [updateURL]);
 
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
-        setFilters(prevFilters => ({
+        setFilters((prevFilters) => ({
             ...prevFilters,
             [name]: value,
         }));
     };
 
     const handleSortChange = (sortField, sortOrder) => {
-        setFilters(prevFilters => ({
+        setFilters((prevFilters) => ({
             ...prevFilters,
             order: sortField,
             dir: sortOrder,
         }));
     };
 
-    useState(() => {
-        const apiEndpoint = document.querySelector('meta[name="api-endpoint"]').getAttribute('content');
-        setApiEndpoint(apiEndpoint);
-        fetchProducts(apiEndpoint, filters);
-    });
+    useEffect(() => {
+        const apiEndpointFromMeta = document
+            .querySelector('meta[name="api-endpoint"]')
+            ?.getAttribute('content');
+
+        if (apiEndpointFromMeta) {
+            setApiEndpoint(apiEndpointFromMeta);
+        }
+    }, []);
 
     useEffect(() => {
-        fetchProducts(apiEndpoint, filters);
+        if (apiEndpoint) {
+            fetchProducts(apiEndpoint, filters);
+        }
     }, [filters, apiEndpoint, fetchProducts]);
 
     return (
@@ -101,11 +108,9 @@ const ProductList = () => {
 
                         <div className="meta-sort">
                             <span className="sort-title">Сортировка:</span>
-
                             <a href="#sort-asc" onClick={() => handleSortChange('price', 'asc')}>
                                 Сначала дешевые
                             </a>
-
                             <a href="#sort-desc" onClick={() => handleSortChange('price', 'desc')}>
                                 Сначала дорогие
                             </a>
@@ -147,7 +152,7 @@ const ProductList = () => {
                             </p>
 
                             <div className="view-products grid">
-                                {products.map(product => (
+                                {products.map((product) => (
                                     <ProductModel key={`product${product.id}`} product={product} />
                                 ))}
                             </div>

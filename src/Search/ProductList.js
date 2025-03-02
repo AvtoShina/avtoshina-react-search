@@ -12,12 +12,13 @@ import debounce from 'lodash.debounce';
 
 // Custom hook to only run the effect on updates (not initial mount)
 function useUpdateEffect(effect, dependencies) {
-    const prevValue = useRef(true);
+    const prevValue = useRef(JSON.stringify(dependencies)); // Store as string
 
     useEffect(() => {
-        if (prevValue.current !== dependencies) {
+        const currentDeps = JSON.stringify(dependencies);
+        if (prevValue.current !== currentDeps) {
             effect();
-            prevValue.current = dependencies; // Update the reference to the new value
+            prevValue.current = currentDeps; // Update the reference to the new value
         }
     }, dependencies);
 }
@@ -31,6 +32,7 @@ const ProductList = () => {
     const [season, setSeason] = useQueryState('season', { defaultValue: '' });
     const [order, setOrder] = useQueryState('order', { defaultValue: 'price' });
     const [dir, setDir] = useQueryState('dir', { defaultValue: 'asc' });
+    const [page, setPage] = useQueryState('page', { defaultValue: 1 }); // Add page state
 
     const [products, setProducts] = useState([]);
     const [vendors, setVendors] = useState([]);
@@ -38,7 +40,14 @@ const ProductList = () => {
     const [heights, setHeights] = useState([]);
     const [diameters, setDiameters] = useState([]);
     const [seasons, setSeasons] = useState([]);
-    const [meta, setMeta] = useState({ total: 0, from: 0, to: 0 });
+    const [meta, setMeta] = useState({
+        current_page: 1,
+        last_page: 1,
+        from: 0,
+        to: 0,
+        total: 0
+    });  // Initialize with backend meta properties
+
     const [apiEndpoint, setApiEndpoint] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
@@ -51,7 +60,8 @@ const ProductList = () => {
         season,
         order,
         dir,
-    }), [vendor, width, height, diameter, season, order, dir]);
+        page, // Include page in filters
+    }), [vendor, width, height, diameter, season, order, dir, page]);
 
     const fetchProducts = useCallback(async (apiEndpoint, filters) => {
         if (!apiEndpoint || isLoading) return;
@@ -68,7 +78,13 @@ const ProductList = () => {
             const data = await response.json();
 
             setProducts(data.items || []);
-            setMeta(data.meta || []);
+            setMeta(data.meta || {
+                current_page: 1,
+                last_page: 1,
+                from: 0,
+                to: 0,
+                total: 0
+            }); // Ensure default meta is consistent
             setVendors(data.filters?.vendors || []);
             setWidths(data.filters?.widths || []);
             setHeights(data.filters?.heights || []);
@@ -122,6 +138,31 @@ const ProductList = () => {
 
     const handleSeasonFilterChange = (e) => {
         setSeason(e.target.value);
+    };
+
+    const handlePageChange = (newPage) => {
+        setPage(newPage);
+    };
+
+    // Generate pagination links
+    const paginationLinks = () => {
+        const links = [];
+        for (let i = 1; i <= meta.last_page; i++) {
+            links.push(
+                <span
+                    key={i}
+                    onClick={() => handlePageChange(i)}
+                    style={{
+                        cursor: 'pointer',
+                        fontWeight: meta.current_page === i ? 'bold' : 'normal',
+                        margin: '0 5px',
+                    }}
+                >
+                    {i}
+                </span>
+            );
+        }
+        return links;
     };
 
     return (
@@ -212,6 +253,9 @@ const ProductList = () => {
                                     ))}
                                 </div>
                             )}
+                            <div className="pagination">
+                                {paginationLinks()}
+                            </div>
                         </main>
                     </div>
                 </div>

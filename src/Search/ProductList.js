@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { useQueryState } from 'nuqs';
 import ProductModel from './ProductModel';
 import BrandFilter from './Filters/BrandFilter';
@@ -7,6 +7,20 @@ import HeightFilter from './Filters/HeightFilter';
 import DiameterFilter from './Filters/DiameterFilter';
 import SeasonFilter from './Filters/SeasonFilter';
 import './../css/product-list.css';
+import Loader from './Loader';
+import debounce from 'lodash.debounce';
+
+// Custom hook to only run the effect on updates (not initial mount)
+function useUpdateEffect(effect, dependencies) {
+    const prevValue = useRef(true);
+
+    useEffect(() => {
+        if (prevValue.current !== dependencies) {
+            effect();
+            prevValue.current = dependencies; // Update the reference to the new value
+        }
+    }, dependencies);
+}
 
 const ProductList = () => {
     // Define useQueryState hooks for each filter
@@ -26,10 +40,10 @@ const ProductList = () => {
     const [seasons, setSeasons] = useState([]);
     const [meta, setMeta] = useState({ total: 0, from: 0, to: 0 });
     const [apiEndpoint, setApiEndpoint] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     // Combine query state values into a single filters object
-    let filters;
-    filters = {
+    const filters = useMemo(() => ({
         vendor,
         width,
         height,
@@ -37,11 +51,11 @@ const ProductList = () => {
         season,
         order,
         dir,
-    };
+    }), [vendor, width, height, diameter, season, order, dir]);
 
     const fetchProducts = useCallback(async (apiEndpoint, filters) => {
-        if (!apiEndpoint) return;
-        const defaultMeta = { total: 0, from: 0, to: 0 }; // Moved inside
+        if (!apiEndpoint || isLoading) return;
+        setIsLoading(true);
 
         try {
             const query = new URLSearchParams(filters).toString();
@@ -54,7 +68,7 @@ const ProductList = () => {
             const data = await response.json();
 
             setProducts(data.items || []);
-            setMeta(data.meta || defaultMeta);
+            setMeta(data.meta || []);
             setVendors(data.filters?.vendors || []);
             setWidths(data.filters?.widths || []);
             setHeights(data.filters?.heights || []);
@@ -62,6 +76,8 @@ const ProductList = () => {
             setSeasons(data.filters?.seasons || []);
         } catch (error) {
             console.error('Error fetching products:', error);
+        } finally {
+            setIsLoading(false);
         }
     }, []);
 
@@ -80,13 +96,14 @@ const ProductList = () => {
         }
     }, []);
 
-    useEffect(() => {
-        if (apiEndpoint) {
-            fetchProducts(apiEndpoint, filters);
-        }
-    }, [filters, apiEndpoint, fetchProducts]);
+    const debouncedFetch = useCallback(debounce(fetchProducts, 300), [fetchProducts]);
 
-    // Handler functions to update the query parameters:
+    useUpdateEffect(() => {
+        if (apiEndpoint) {
+            debouncedFetch(apiEndpoint, filters);
+        }
+    }, [filters, apiEndpoint, debouncedFetch]);
+
     const handleBrandFilterChange = (e) => {
         setVendor(e.target.value);
     };
@@ -183,15 +200,18 @@ const ProductList = () => {
                         <main className="rs-products">
                             <p className="h3 search-result-header">
                                 <span className="search-result-title">
-                                    Найдено {meta.total} шин.
+                                    Найдено {meta.total} шин
                                 </span>
                             </p>
-
-                            <div className="view-products grid">
-                                {products.map((product) => (
-                                    <ProductModel key={`product${product.id}`} product={product} />
-                                ))}
-                            </div>
+                            {isLoading ? (
+                                <Loader />
+                            ) : (
+                                <div className="view-products grid">
+                                    {products.map((product) => (
+                                        <ProductModel key={`product${product.id}`} product={product} />
+                                    ))}
+                                </div>
+                            )}
                         </main>
                     </div>
                 </div>

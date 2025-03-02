@@ -10,17 +10,22 @@ import './../css/product-list.css';
 import Loader from './Loader';
 import debounce from 'lodash.debounce';
 
+// Define the debounced function outside the component
+const debouncedFetchProducts = debounce((endpoint, filterVals, fetchFn) => {
+    fetchFn(endpoint, filterVals);
+}, 300);
+
 // Custom hook to only run the effect on updates (not initial mount)
 function useUpdateEffect(effect, dependencies) {
-    const prevValue = useRef(JSON.stringify(dependencies)); // Store as string
+    const prevValue = useRef(JSON.stringify(dependencies));
 
     useEffect(() => {
         const currentDeps = JSON.stringify(dependencies);
         if (prevValue.current !== currentDeps) {
             effect();
-            prevValue.current = currentDeps; // Update the reference to the new value
+            prevValue.current = currentDeps;
         }
-    }, dependencies);
+    }, [dependencies, effect]); // Add both dependencies explicitly
 }
 
 const ProductList = () => {
@@ -84,7 +89,7 @@ const ProductList = () => {
                 from: 0,
                 to: 0,
                 total: 0
-            }); // Ensure default meta is consistent
+            });
             setVendors(data.filters?.vendors || []);
             setWidths(data.filters?.widths || []);
             setHeights(data.filters?.heights || []);
@@ -95,7 +100,7 @@ const ProductList = () => {
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    }, [isLoading]);
 
     const handleSortChange = (sortField, sortOrder) => {
         setOrder(sortField);
@@ -112,7 +117,10 @@ const ProductList = () => {
         }
     }, []);
 
-    const debouncedFetch = useCallback(debounce(fetchProducts, 300), [fetchProducts]);
+    // Inline debounce with explicit dependencies
+    const debouncedFetch = useCallback((endpoint, filterVals) => {
+        debouncedFetchProducts(endpoint, filterVals, fetchProducts);
+    }, [fetchProducts]); // Only fetchProducts as dependency
 
     useUpdateEffect(() => {
         if (apiEndpoint) {
@@ -122,26 +130,32 @@ const ProductList = () => {
 
     const handleBrandFilterChange = (e) => {
         setVendor(e.target.value);
+        setPage(1);
     };
 
     const handleWidthFilterChange = (e) => {
         setWidth(e.target.value);
+        setPage(1);
     };
 
     const handleHeightFilterChange = (e) => {
         setHeight(e.target.value);
+        setPage(1);
     };
 
     const handleDiameterFilterChange = (e) => {
         setDiameter(e.target.value);
+        setPage(1);
     };
 
     const handleSeasonFilterChange = (e) => {
         setSeason(e.target.value);
+        setPage(1);
     };
 
     const handlePageChange = (newPage) => {
         setPage(newPage);
+        setPage(1);
     };
 
     // Generate pagination links
@@ -209,27 +223,27 @@ const ProductList = () => {
                                                 <BrandFilter
                                                     vendors={vendors}
                                                     handleFilterChange={handleBrandFilterChange}
-                                                    value={vendor}
+                                                    value={vendor || ''}
                                                 />
                                                 <WidthFilter
                                                     widths={widths}
                                                     handleFilterChange={handleWidthFilterChange}
-                                                    value={width}
+                                                    value={width || ''}
                                                 />
                                                 <HeightFilter
                                                     heights={heights}
                                                     handleFilterChange={handleHeightFilterChange}
-                                                    value={height}
+                                                    value={height || ''}
                                                 />
                                                 <DiameterFilter
                                                     diameters={diameters}
                                                     handleFilterChange={handleDiameterFilterChange}
-                                                    value={diameter}
+                                                    value={diameter || ''}
                                                 />
                                                 <SeasonFilter
                                                     seasons={seasons}
                                                     handleFilterChange={handleSeasonFilterChange}
-                                                    value={season}
+                                                    value={season || ''}
                                                 />
                                             </div>
                                         </form>

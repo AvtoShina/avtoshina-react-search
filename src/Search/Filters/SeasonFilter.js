@@ -10,7 +10,7 @@ const SeasonFilter = ({ seasons, handleFilterChange, value }) => {
                     onChange={handleFilterChange}
                     value={value || ''} // Bind to the passed value, default to empty string
                 >
-                    <option value="">Выберите сезон</option>
+                    <option value="">Любой</option>
                     {seasons.map(season => (
                         <option
                             key={`season${season}`}

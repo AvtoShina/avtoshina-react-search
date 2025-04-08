@@ -10,7 +10,7 @@ const BrandFilter = ({ vendors, handleFilterChange, value }) => {
                     onChange={handleFilterChange}
                     value={value || ''} // Bind to the passed value
                 >
-                    <option value="">Выберите бренд</option>
+                    <option value="">Любой</option>
                     {vendors.map(brand => (
                         <option
                             key={`brand-${brand.slug}`}

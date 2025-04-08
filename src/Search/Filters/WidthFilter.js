@@ -10,7 +10,7 @@ const WidthFilter = ({ widths, handleFilterChange, value }) => {
                     onChange={handleFilterChange}
                     value={value || ''} // Bind to the passed value, default to empty string
                 >
-                    <option value="">Выберите ширину</option>
+                    <option value="">Ширина</option>
                     {widths.map(width => (
                         <option
                             key={`width${width}`}

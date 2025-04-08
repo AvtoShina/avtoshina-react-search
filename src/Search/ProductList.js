@@ -155,27 +155,77 @@ const ProductList = () => {
 
     const handlePageChange = (newPage) => {
         setPage(newPage);
-        setPage(1);
     };
 
     // Generate pagination links
     const paginationLinks = () => {
         const links = [];
-        for (let i = 1; i <= meta.last_page; i++) {
+        const totalPages = meta.last_page;
+        const currentPage = meta.current_page;
+
+        if (totalPages < 2) {
+            return;
+        }
+
+        // Always show the first page
+        links.push(
+            <span
+                key={1}
+                onClick={() => handlePageChange(1)}
+                style={{
+                    cursor: 'pointer',
+                    fontWeight: currentPage === 1 ? 'bold' : 'normal',
+                    margin: '0 5px',
+                }}
+            >
+            1
+        </span>
+        );
+
+        // Add dots if current page is far from the start
+        if (currentPage > 4) {
+            links.push(<span key="start-dots" style={{ margin: '0 5px' }}>...</span>);
+        }
+
+        // Show 2 pages before the current page, current page, and 2 pages after it
+        for (let i = Math.max(2, currentPage - 2); i <= Math.min(currentPage + 2, totalPages - 1); i++) {
             links.push(
                 <span
                     key={i}
                     onClick={() => handlePageChange(i)}
                     style={{
                         cursor: 'pointer',
-                        fontWeight: meta.current_page === i ? 'bold' : 'normal',
+                        fontWeight: currentPage === i ? 'bold' : 'normal',
                         margin: '0 5px',
                     }}
                 >
-                    {i}
-                </span>
+                {i}
+            </span>
             );
         }
+
+        // Add dots if current page is far from the end
+        if (currentPage < totalPages - 3) {
+            links.push(<span key="end-dots" style={{ margin: '0 5px' }}>...</span>);
+        }
+
+        // Always show the last page
+        if (totalPages > 1) {
+            links.push(
+                <span
+                    key={totalPages}
+                    onClick={() => handlePageChange(totalPages)}
+                    style={{
+                        cursor: 'pointer',
+                        fontWeight: currentPage === totalPages ? 'bold' : 'normal',
+                        margin: '0 5px',
+                    }}
+                >
+                {totalPages}
+            </span>
+            );
+        }
+
         return links;
     };
 

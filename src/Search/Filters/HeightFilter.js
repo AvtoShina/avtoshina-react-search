@@ -10,7 +10,7 @@ const HeightFilter = ({ heights, handleFilterChange, value }) => {
                     onChange={handleFilterChange}
                     value={value || ''} // Bind to the passed value, default to empty string
                 >
-                    <option value="">Выберите высоту</option>
+                    <option value="">Любой</option>
                     {heights.map(height => (
                         <option
                             key={`height${height}`}

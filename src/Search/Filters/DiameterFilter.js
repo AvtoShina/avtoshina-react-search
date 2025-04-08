@@ -10,7 +10,7 @@ const DiameterFilter = ({ diameters, handleFilterChange, value }) => {
                     onChange={handleFilterChange}
                     value={value || ''} // Bind to the passed value, default to empty string
                 >
-                    <option value="">Выберите диаметр</option>
+                    <option value="">Любой</option>
                     {diameters.map(diameter => (
                         <option
                             key={`diameter${diameter}`}
